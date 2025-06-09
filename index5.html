@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming Coding Events</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --warning: #f8961e;
+            --danger: #f72585;
+            --dark: #2b2d42;
+            --light: #f8f9fa;
+            --gray: #adb5bd;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6c757d;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+
+        .event-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .event-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .event-date {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .event-day {
+            font-size: 2.5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .event-month {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 5px;
+        }
+
+        .event-content {
+            padding: 25px;
+        }
+
+        .event-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .event-meta {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .event-desc {
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .event-tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .tag {
+            padding: 5px 10px;
+            background: #f8f9fa;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .event-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .calendar-link {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .calendar-link a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .calendar-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .events-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Upcoming Coding Events</h1>
+            <p class="subtitle">Discover hackathons, workshops, and conferences to level up your programming skills</p>
+        </header>
+
+        <div class="events-grid">
+            <!-- Event 1 -->
+            <div class="event-card">
+                <div class="event-date">
+                    <div class="event-day">15</div>
+                    <div class="event-month">June 2023</div>
+                </div>
+                <div class="event-content">
+                    <h3 class="event-title">Global Hackathon 2023</h3>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            48 Hours
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-globe"></i>
+                            Online
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            500+ Participants
+                        </div>
+                    </div>
+                    <p class="event-desc">
+                        Join developers worldwide for this annual coding marathon. Build innovative projects and compete for $50,000 in prizes.
+                    </p>
+                    <div class="event-tags">
+                        <span class="tag">Hackathon</span>
+                        <span class="tag">Web Development</span>
+                        <span class="tag">AI</span>
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-ticket-alt"></i>
+                            Register Now
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 2 -->
+            <div class="event-card">
+                <div class="event-date">
+                    <div class="event-day">22</div>
+                    <div class="event-month">June 2023</div>
+                </div>
+                <div class="event-content">
+                    <h3 class="event-title">React Conf 2023</h3>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            2 Days
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            San Francisco
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            Limited Seats
+                        </div>
+                    </div>
+                    <p class="event-desc">
+                        The official React conference featuring talks from the core team and community experts about the future of React.
+                    </p>
+                    <div class="event-tags">
+                        <span class="tag">Conference</span>
+                        <span class="tag">React</span>
+                        <span class="tag">Frontend</span>
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-ticket-alt"></i>
+                            Register Now
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 3 -->
+            <div class="event-card">
+                <div class="event-date">
+                    <div class="event-day">30</div>
+                    <div class="event-month">June 2023</div>
+                </div>
+                <div class="event-content">
+                    <h3 class="event-title">Python Data Science Bootcamp</h3>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            4 Weeks
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-globe"></i>
+                            Online
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-certificate"></i>
+                            Certification
+                        </div>
+                    </div>
+                    <p class="event-desc">
+                        Intensive hands-on training covering Pandas, NumPy, Matplotlib, and machine learning fundamentals with Python.
+                    </p>
+                    <div class="event-tags">
+                        <span class="tag">Workshop</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">Data Science</span>
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-ticket-alt"></i>
+                            Register Now
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 4 -->
+            <div class="event-card">
+                <div class="event-date">
+                    <div class="event-day">05</div>
+                    <div class="event-month">July 2023</div>
+                </div>
+                <div class="event-content">
+                    <h3 class="event-title">DevOps World Championship</h3>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            24 Hours
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Berlin & Online
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            Teams of 3
+                        </div>
+                    </div>
+                    <p class="event-desc">
+                        Competitive event where teams solve real-world DevOps challenges with Kubernetes, Docker, and cloud technologies.
+                    </p>
+                    <div class="event-tags">
+                        <span class="tag">Competition</span>
+                        <span class="tag">DevOps</span>
+                        <span class="tag">Cloud</span>
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-ticket-alt"></i>
+                            Register Now
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 5 -->
+            <div class="event-card">
+                <div class="event-date">
+                    <div class="event-day">12</div>
+                    <div class="event-month">July 2023</div>
+                </div>
+                <div class="event-content">
+                    <h3 class="event-title">Women Who Code Summit</h3>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            1 Day
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            New York
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            200+ Attendees
+                        </div>
+                    </div>
+                    <p class="event-desc">
+                        Empowering women in technology through keynote speeches, technical workshops, and networking opportunities.
+                    </p>
+                    <div class="event-tags">
+                        <span class="tag">Conference</span>
+                        <span class="tag">Diversity</span>
+                        <span class="tag">Career</span>
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-ticket-alt"></i>
+                            Register Now
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 6 -->
+            <div class="event-card">
+                <div class="event-date">
+                    <div class="event-day">18</div>
+                    <div class="event-month">July 2023</div>
+                </div>
+                <div class="event-content">
+                    <h3 class="event-title">Blockchain Developer Workshop</h3>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            6 Hours
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-globe"></i>
+                            Online
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-certificate"></i>
+                            Certificate
+                        </div>
+                    </div>
+                    <p class="event-desc">
+                        Hands-on workshop covering Solidity, smart contracts, and building decentralized applications on Ethereum.
+                    </p>
+                    <div class="event-tags">
+                        <span class="tag">Workshop</span>
+                        <span class="tag">Blockchain</span>
+                        <span class="tag">Web3</span>
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-ticket-alt"></i>
+                            Register Now
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 7 -->
+            <div class="event-card">
+                <div class="event-date">
+                    <div class="event-day">25</div>
+                    <div class="event-month">July 2023</div>
+                </div>
+                <div class="event-content">
+                    <h3 class="event-title">AI Innovation Challenge</h3>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            36 Hours
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            London
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            Teams of 2-4
+                        </div>
+                    </div>
+                    <p class="event-desc">
+                        Build innovative AI solutions using machine learning and compete for £10,000 in prizes and incubation opportunities.
+                    </p>
+                    <div class="event-tags">
+                        <span class="tag">Hackathon</span>
+                        <span class="tag">AI</span>
+                        <span class="tag">Machine Learning</span>
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-ticket-alt"></i>
+                            Register Now
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 8 -->
+            <div class="event-card">
+                <div class="event-date">
+                    <div class="event-day">02</div>
+                    <div class="event-month">Aug 2023</div>
+                </div>
+                <div class="event-content">
+                    <h3 class="event-title">Flutter Forward Extended</h3>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            1 Day
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Multiple Cities
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            Free Entry
+                        </div>
+                    </div>
+                    <p class="event-desc">
+                        Local community events following up on Flutter Forward with talks, codelabs, and networking for mobile developers.
+                    </p>
+                    <div class="event-tags">
+                        <span class="tag">Meetup</span>
+                        <span class="tag">Flutter</span>
+                        <span class="tag">Mobile</span>
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-ticket-alt"></i>
+                            Find Local Event
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 9 -->
+            <div class="event-card">
+                <div class="event-date">
+                    <div class="event-day">09</div>
+                    <div class="event-month">Aug 2023</div>
+                </div>
+                <div class="event-content">
+                    <h3 class="event-title">Game Dev Weekend</h3>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            3 Days
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-globe"></i>
+                            Online
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            Solo or Team
+                        </div>
+                    </div>
+                    <p class="event-desc">
+                        Create a game from scratch in Unity or Unreal Engine during this weekend-long game development sprint.
+                    </p>
+                    <div class="event-tags">
+                        <span class="tag">Game Jam</span>
+                        <span class="tag">Unity</span>
+                        <span class="tag">Unreal</span>
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-ticket-alt"></i>
+                            Register Now
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 10 -->
+            <div class="event-card">
+                <div class="event-date">
+                    <div class="event-day">15</div>
+                    <div class="event-month">Aug 2023</div>
+                </div>
+                <div class="event-content">
+                    <h3 class="event-title">Tech Career Fair 2023</h3>
+                    <div class="event-meta">
+                        <div class="meta-item">
+                            <i class="fas fa-clock"></i>
+                            6 Hours
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            Chicago
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-users"></i>
+                            50+ Companies
+                        </div>
+                    </div>
+                    <p class="event-desc">
+                        Connect with top tech companies hiring for software engineering, data science, and IT roles.
+                    </p>
+                    <div class="event-tags">
+                        <span class="tag">Career</span>
+                        <span class="tag">Networking</span>
+                        <span class="tag">Jobs</span>
+                    </div>
+                    <div class="event-actions">
+                        <button class="btn btn-primary">
+                            <i class="fas fa-ticket-alt"></i>
+                            Get Free Ticket
+                        </button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-info-circle"></i>
+                            Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="calendar-link">
+            <a href="#">
+                <i class="fas fa-calendar-alt"></i>
+                Add all events to your calendar
+            </a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Event registration buttons
+            const registerButtons = document.querySelectorAll('.btn-primary');
+            
+            registerButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const eventCard = this.closest('.event-card');
+                    const eventTitle = eventCard.querySelector('.event-title').textContent;
+                    alert(`Registering for: ${eventTitle}`);
+                    // In a real app, this would open a registration form or external link
+                });
+            });
+            
+            // Event detail buttons
+            const detailButtons = document.querySelectorAll('.btn-outline');
+            
+            detailButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const eventCard = this.closest('.event-card');
+                    const eventTitle = eventCard.querySelector('.event-title').textContent;
+                    alert(`Showing details for: ${eventTitle}`);
+                    // In a real app, this would open a modal with more information
+                });
+            });
+            
+            // Calendar link
+            const calendarLink = document.querySelector('.calendar-link a');
+            calendarLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert('All events would be added to your calendar in a real implementation');
+            });
+        });
+    </script>
+</body>
+</html>
