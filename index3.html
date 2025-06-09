@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeTyper - Coding Typing Game</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <style>
+        :root {
+            --bg-color: #1a1a2e;
+            --primary: #4cc9f0;
+            --secondary: #f72585;
+            --text: #e2e2e2;
+            --correct: #4ad66d;
+            --incorrect: #f72585;
+            --cursor: #fff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Fira Code', monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .game-container {
+            width: 100%;
+            max-width: 800px;
+            background: rgba(26, 26, 46, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px rgba(76, 201, 240, 0.5);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .stat-box span {
+            margin-left: 5px;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .code-display {
+            background: #1e1e2e;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .typed-text {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: calc(100% - 40px);
+            height: calc(100% - 40px);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .char {
+            position: relative;
+        }
+
+        .char.correct {
+            color: var(--correct);
+        }
+
+        .char.incorrect {
+            color: var(--incorrect);
+            text-decoration: underline;
+        }
+
+        .cursor {
+            position: absolute;
+            width: 2px;
+            height: 1.2em;
+            background: var(--cursor);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .input-area {
+            width: 100%;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1.1rem;
+            color: var(--text);
+            resize: none;
+            outline: none;
+        }
+
+        .input-area:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(76, 201, 240, 0.3);
+        }
+
+        .restart-btn {
+            display: block;
+            margin: 20px auto 0;
+            padding: 10px 25px;
+            background: var(--primary);
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .restart-btn:hover {
+            background: #3aa8d4;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 201, 240, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+            .stats {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>CodeTyper</h1>
+            <p>Test your coding typing speed & accuracy!</p>
+        </div>
+
+        <div class="stats">
+            <div class="stat-box">Time: <span id="time">60</span>s</div>
+            <div class="stat-box">WPM: <span id="wpm">0</span></div>
+            <div class="stat-box">Accuracy: <span id="accuracy">100</span>%</div>
+        </div>
+
+        <div class="code-display">
+            <pre id="code-snippet"><code class="language-javascript">function calculateSum(a, b) {
+    return a + b;
+}
+
+const result = calculateSum(5, 10);
+console.log(result);</code></pre>
+            <div id="typed-text" class="typed-text"></div>
+        </div>
+
+        <textarea id="input-area" class="input-area" placeholder="Start typing here..." autofocus></textarea>
+        <button id="restart-btn" class="restart-btn">Restart</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            hljs.highlightAll();
+
+            const codeSnippet = document.getElementById('code-snippet');
+            const typedText = document.getElementById('typed-text');
+            const inputArea = document.getElementById('input-area');
+            const timeDisplay = document.getElementById('time');
+            const wpmDisplay = document.getElementById('wpm');
+            const accuracyDisplay = document.getElementById('accuracy');
+            const restartBtn = document.getElementById('restart-btn');
+
+            let timeLeft = 60;
+            let timer;
+            let isTyping = false;
+            let totalTyped = 0;
+            let correctTyped = 0;
+            let startTime;
+
+            const codeExamples = [
+                `function factorial(n) {
+    if (n <= 1) return 1;
+    return n * factorial(n - 1);
+}`,
+                `const numbers = [1, 2, 3, 4, 5];
+const squared = numbers.map(x => x * x);`,
+                `class Person {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    greet() {
+        return \`Hello, my name is \${this.name}!\`;
+    }
+}`,
+                `def fibonacci(n):
+    if n <= 1:
+        return n
+    else:
+        return fibonacci(n-1) + fibonacci(n-2)`,
+                `<button onclick="alert('Hello!')">
+    Click Me
+</button>`
+            ];
+
+            function initGame() {
+                const randomCode = codeExamples[Math.floor(Math.random() * codeExamples.length)];
+                codeSnippet.innerHTML = `<code class="language-javascript">${randomCode}</code>`;
+                hljs.highlightAll();
+
+                typedText.innerHTML = '';
+                inputArea.value = '';
+                timeLeft = 60;
+                totalTyped = 0;
+                correctTyped = 0;
+                isTyping = false;
+
+                timeDisplay.textContent = timeLeft;
+                wpmDisplay.textContent = 0;
+                accuracyDisplay.textContent = 100;
+
+                clearInterval(timer);
+                inputArea.focus();
+            }
+
+            function startTimer() {
+                timer = setInterval(() => {
+                    timeLeft--;
+                    timeDisplay.textContent = timeLeft;
+
+                    if (timeLeft <= 0) {
+                        clearInterval(timer);
+                        inputArea.disabled = true;
+                        calculateResults();
+                    }
+                }, 1000);
+            }
+
+            function calculateResults() {
+                const timeInMinutes = (60 - timeLeft) / 60;
+                const words = (correctTyped / 5);
+                const wpm = Math.round(words / timeInMinutes);
+                const accuracy = Math.round((correctTyped / totalTyped) * 100) || 0;
+
+                wpmDisplay.textContent = wpm;
+                accuracyDisplay.textContent = accuracy;
+            }
+
+            function renderTypedText(input) {
+                const code = codeSnippet.textContent;
+                typedText.innerHTML = '';
+
+                for (let i = 0; i < code.length; i++) {
+                    const charSpan = document.createElement('span');
+                    charSpan.classList.add('char');
+
+                    if (i < input.length) {
+                        if (input[i] === code[i]) {
+                            charSpan.classList.add('correct');
+                            correctTyped++;
+                        } else {
+                            charSpan.classList.add('incorrect');
+                        }
+                        charSpan.textContent = code[i];
+                    }
+
+                    typedText.appendChild(charSpan);
+                }
+
+                // Add cursor
+                const cursor = document.createElement('span');
+                cursor.classList.add('cursor');
+                typedText.appendChild(cursor);
+            }
+
+            inputArea.addEventListener('input', (e) => {
+                if (!isTyping) {
+                    isTyping = true;
+                    startTime = new Date();
+                    startTimer();
+                }
+
+                const input = e.target.value;
+                totalTyped = input.length;
+                renderTypedText(input);
+
+                // Calculate WPM in real-time
+                const timeElapsed = (new Date() - startTime) / 60000;
+                const words = (correctTyped / 5);
+                const wpm = Math.round(words / timeElapsed) || 0;
+                wpmDisplay.textContent = wpm;
+
+                // Calculate accuracy
+                const accuracy = Math.round((correctTyped / totalTyped) * 100) || 0;
+                accuracyDisplay.textContent = accuracy;
+            });
+
+            restartBtn.addEventListener('click', initGame);
+
+            initGame();
+        });
+    </script>
+</body>
+</html>

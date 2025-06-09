@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeMaster - 10-Level Coding Challenge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/atom-one-dark.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --success: #4cc9f0;
+            --text: #2b2d42;
+            --bg: #f8f9fa;
+            --card-bg: #ffffff;
+            --border: #e9ecef;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .level-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-card.completed {
+            border-left: 5px solid var(--success);
+        }
+
+        .level-card.completed::after {
+            content: '✓';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 25px;
+            height: 25px;
+            background: var(--success);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .level-number {
+            font-size: 1rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .level-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+
+        .level-desc {
+            font-size: 0.95rem;
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .challenge-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-top: 30px;
+            border: 1px solid var(--border);
+            display: none;
+        }
+
+        .challenge-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .challenge-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .problem-statement {
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .code-editor {
+            width: 100%;
+            min-height: 200px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 15px;
+            font-family: 'Fira Code', monospace;
+            margin-bottom: 20px;
+            background: #1e1e2e;
+            color: white;
+        }
+
+        .test-cases {
+            margin-top: 25px;
+        }
+
+        .test-case {
+            background: #f8f9fa;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .test-case h4 {
+            margin-bottom: 10px;
+            color: var(--text);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .levels-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .challenge-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>CodeMaster Challenges</h1>
+            <p class="subtitle">Complete 10 coding levels to become a CodeMaster</p>
+        </header>
+
+        <div class="levels-grid" id="levelsGrid">
+            <!-- Level cards will be generated by JavaScript -->
+        </div>
+
+        <div class="challenge-container" id="challengeContainer">
+            <div class="challenge-header">
+                <h2 class="challenge-title" id="challengeTitle">Level 1: Sum of Two Numbers</h2>
+                <button class="btn" id="submitBtn">Submit Solution</button>
+            </div>
+            
+            <div class="problem-statement" id="problemStatement">
+                <h3>Problem Statement</h3>
+                <p>Write a function that takes two numbers as arguments and returns their sum.</p>
+                
+                <h3>Example</h3>
+                <pre><code class="language-javascript">sum(5, 3) ➞ 8
+sum(-1, 4) ➞ 3</code></pre>
+            </div>
+            
+            <h3>Your Solution</h3>
+            <textarea class="code-editor" id="codeEditor">function sum(a, b) {
+    // Your code here
+}</textarea>
+            
+            <div class="test-cases">
+                <h3>Test Cases</h3>
+                <div class="test-case">
+                    <h4>Test Case 1</h4>
+                    <p>Input: sum(2, 3)</p>
+                    <p>Expected Output: 5</p>
+                    <p id="testCase1Result" class="hidden"></p>
+                </div>
+                <div class="test-case">
+                    <h4>Test Case 2</h4>
+                    <p>Input: sum(-1, 1)</p>
+                    <p>Expected Output: 0</p>
+                    <p id="testCase2Result" class="hidden"></p>
+                </div>
+                <div class="test-case">
+                    <h4>Test Case 3</h4>
+                    <p>Input: sum(0, 0)</p>
+                    <p>Expected Output: 0</p>
+                    <p id="testCase3Result" class="hidden"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // DOM Elements
+            const levelsGrid = document.getElementById('levelsGrid');
+            const challengeContainer = document.getElementById('challengeContainer');
+            const challengeTitle = document.getElementById('challengeTitle');
+            const problemStatement = document.getElementById('problemStatement');
+            const codeEditor = document.getElementById('codeEditor');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            // Level data
+            const levels = [
+                {
+                    title: "Sum of Two Numbers",
+                    description: "Write a function that returns the sum of two numbers.",
+                    problem: `
+                        <h3>Problem Statement</h3>
+                        <p>Write a function that takes two numbers as arguments and returns their sum.</p>
+                        
+                        <h3>Example</h3>
+                        <pre><code class="language-javascript">sum(5, 3) ➞ 8
+sum(-1, 4) ➞ 3</code></pre>
+                    `,
+                    starterCode: `function sum(a, b) {
+    // Your code here
+}`,
+                    testCases: [
+                        { input: 'sum(2, 3)', expected: 5 },
+                        { input: 'sum(-1, 1)', expected: 0 },
+                        { input: 'sum(0, 0)', expected: 0 }
+                    ],
+                    solution: (code) => {
+                        try {
+                            eval(code);
+                            return typeof sum === 'function';
+                        } catch {
+                            return false;
+                        }
+                    }
+                },
+                {
+                    title: "Factorial Calculator",
+                    description: "Write a function to calculate the factorial of a number.",
+                    problem: `
+                        <h3>Problem Statement</h3>
+                        <p>Write a function that calculates the factorial of a non-negative integer.</p>
+                        
+                        <h3>Example</h3>
+                        <pre><code class="language-javascript">factorial(5) ➞ 120
+factorial(0) ➞ 1</code></pre>
+                    `,
+                    starterCode: `function factorial(n) {
+    // Your code here
+}`,
+                    testCases: [
+                        { input: 'factorial(5)', expected: 120 },
+                        { input: 'factorial(0)', expected: 1 },
+                        { input: 'factorial(1)', expected: 1 }
+                    ],
+                    solution: (code) => {
+                        try {
+                            eval(code);
+                            return typeof factorial === 'function';
+                        } catch {
+                            return false;
+                        }
+                    }
+                },
+                // Add 8 more levels following the same pattern
+                {
+                    title: "Palindrome Checker",
+                    description: "Check if a string is the same forwards and backwards."
+                },
+                {
+                    title: "Array Sum",
+                    description: "Calculate the sum of all numbers in an array."
+                },
+                {
+                    title: "FizzBuzz",
+                    description: "The classic FizzBuzz programming challenge."
+                },
+                {
+                    title: "Find Maximum",
+                    description: "Find the maximum number in an array."
+                },
+                {
+                    title: "Reverse String",
+                    description: "Return a string with the characters in reverse order."
+                },
+                {
+                    title: "Prime Checker",
+                    description: "Determine if a number is prime."
+                },
+                {
+                    title: "Fibonacci Sequence",
+                    description: "Generate the nth Fibonacci number."
+                },
+                {
+                    title: "Anagram Checker",
+                    description: "Check if two strings are anagrams of each other."
+                }
+            ];
+
+            // Generate level cards
+            levels.forEach((level, index) => {
+                const levelCard = document.createElement('div');
+                levelCard.className = 'level-card';
+                levelCard.innerHTML = `
+                    <div class="level-number">Level ${index + 1}</div>
+                    <h3 class="level-title">${level.title}</h3>
+                    <p class="level-desc">${level.description}</p>
+                    <button class="btn btn-outline start-challenge" data-level="${index}">Start Challenge</button>
+                `;
+                levelsGrid.appendChild(levelCard);
+            });
+
+            // Track completed levels
+            const completedLevels = JSON.parse(localStorage.getItem('completedLevels')) || [];
+
+            // Update UI with completed levels
+            completedLevels.forEach(levelIndex => {
+                const cards = document.querySelectorAll('.level-card');
+                if (cards[levelIndex]) {
+                    cards[levelIndex].classList.add('completed');
+                }
+            });
+
+            // Handle challenge start
+            document.addEventListener('click', (e) => {
+                if (e.target.classList.contains('start-challenge')) {
+                    const levelIndex = parseInt(e.target.dataset.level);
+                    loadChallenge(levelIndex);
+                }
+            });
+
+            // Load challenge
+            function loadChallenge(levelIndex) {
+                const level = levels[levelIndex];
+                challengeTitle.textContent = `Level ${levelIndex + 1}: ${level.title}`;
+                problemStatement.innerHTML = level.problem || `
+                    <h3>Problem Statement</h3>
+                    <p>${level.description}</p>
+                `;
+                codeEditor.value = level.starterCode || '// Write your solution here';
+                challengeContainer.style.display = 'block';
+                
+                // Scroll to challenge
+                challengeContainer.scrollIntoView({ behavior: 'smooth' });
+                
+                // Set up submit button
+                submitBtn.onclick = () => submitSolution(levelIndex);
+            }
+
+            // Submit solution
+            function submitSolution(levelIndex) {
+                const level = levels[levelIndex];
+                const userCode = codeEditor.value;
+                let allTestsPassed = true;
+                
+                // Run test cases
+                if (level.testCases) {
+                    try {
+                        eval(userCode);
+                        
+                        level.testCases.forEach((testCase, i) => {
+                            const resultElement = document.getElementById(`testCase${i+1}Result`);
+                            resultElement.classList.remove('hidden');
+                            
+                            try {
+                                const result = eval(testCase.input);
+                                if (result === testCase.expected) {
+                                    resultElement.textContent = `✓ Passed (Output: ${result})`;
+                                    resultElement.style.color = '#4ad66d';
+                                } else {
+                                    resultElement.textContent = `✗ Failed (Output: ${result}, Expected: ${testCase.expected})`;
+                                    resultElement.style.color = '#f72585';
+                                    allTestsPassed = false;
+                                }
+                            } catch (error) {
+                                resultElement.textContent = `✗ Error: ${error.message}`;
+                                resultElement.style.color = '#f72585';
+                                allTestsPassed = false;
+                            }
+                        });
+                    } catch (error) {
+                        alert(`Error in your code: ${error.message}`);
+                        allTestsPassed = false;
+                    }
+                } else {
+                    // For levels without predefined test cases
+                    if (level.solution) {
+                        allTestsPassed = level.solution(userCode);
+                    } else {
+                        allTestsPassed = confirm("Does your solution work correctly?");
+                    }
+                }
+                
+                // If all tests passed
+                if (allTestsPassed) {
+                    if (!completedLevels.includes(levelIndex)) {
+                        completedLevels.push(levelIndex);
+                        localStorage.setItem('completedLevels', JSON.stringify(completedLevels));
+                        
+                        // Update UI
+                        const cards = document.querySelectorAll('.level-card');
+                        cards[levelIndex].classList.add('completed');
+                        
+                        // Show success message
+                        alert(`🎉 Congratulations! You completed Level ${levelIndex + 1}!`);
+                    }
+                }
+            }
+
+            // Initialize highlight.js
+            hljs.highlightAll();
+        });
+    </script>
+</body>
+</html>

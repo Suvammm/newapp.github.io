@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevLogin - Code Your Way In</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="terminal-effect"></div>
+    <div class="login-container">
+        <div class="logo">
+            <span class="bracket">{</span>
+            <span class="logo-text">DevLogin</span>
+            <span class="bracket">}</span>
+        </div>
+        
+        <div class="tagline">// authenticate to access your code universe</div>
+        
+        <form id="loginForm" class="login-form">
+            <div class="input-group">
+                <label for="username">Username</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">></span>
+                    <input type="text" id="username" name="username" placeholder="your_username" required>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <span class="input-prefix">#</span>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                </div>
+            </div>
+            
+            <button type="submit" class="login-btn">
+                <span class="btn-text">Login</span>
+                <span class="btn-icon">{...}</span>
+            </button>
+            
+            <div class="links">
+                <a href="#" class="link">Forgot password?</a>
+                <a href="#" class="link">Register new account</a>
+            </div>
+        </form>
+        
+        <div class="footer">
+            <div class="code-comment">/* Secure connection established */</div>
+            <div class="status-bar">
+                <span class="status-item">SSL: Enabled</span>
+                <span class="status-item">Auth: v2.4</span>
+                <span class="status-item">© 2023 DevLogin</span>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
